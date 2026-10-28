@@ -680,7 +680,9 @@ module VerifyProgram1(VerifyProgramArgs: VERIFY_PROGRAM_ARGS) = struct
     ctxt#assume_forall "sizeof_pointer" [app] [type_info_type_node] rel;
     (* Arrays: sizeof([T; N]) == N * sizeof(T) and alignof([T; N]) == alignof(T). Needed when the
        array type reaches sizeof/alignof through a type parameter (e.g. a lemma instantiated with
-       `Chunk := [T; N]`), where the structural evaluation of StaticArrayType does not apply. *)
+       `Chunk := [T; N]`), where the structural evaluation of StaticArrayType does not apply.
+       Stated for all n: `array_typeid(t, n)` with n < 0 is not the typeid of any Rust type, and
+       no other axiom constrains sizeof/alignof of such a term. *)
     ctxt#begin_formal;
     let t = ctxt#mk_bound 0 type_info_type_node in
     let n = ctxt#mk_bound 1 ctxt#type_int in

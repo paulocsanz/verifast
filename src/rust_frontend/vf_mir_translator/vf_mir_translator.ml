@@ -5021,6 +5021,7 @@ module Make (Args : VF_MIR_TRANSLATOR_ARGS) = struct
         let moduleName = module_def_path_get body_cpn in
         (* print_endline ("Translating Mod: " ^ moduleName ^ " --- Body: " ^ name); *)
         let split_name = TrName.split_def_path moduleName name in
+        let outer_const_param_value_types = !const_param_value_types in
         const_param_value_types := [];
         let impl_block_gens = impl_block_generics_get_list body_cpn |> List.map translate_generic_param_def in
         let hir_gens_cpn = hir_generics_get body_cpn in
@@ -5330,6 +5331,7 @@ module Make (Args : VF_MIR_TRANSLATOR_ARGS) = struct
               let body_sig = mk_fn_decl contract_template None in
               Some (split_name, body_sig)
         in
+        const_param_value_types := outer_const_param_value_types;
         Ok
           ( body_sig_opt,
             (split_name, body),
